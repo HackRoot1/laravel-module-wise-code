@@ -17,6 +17,7 @@ php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvid
 Run Migration
 
 ```bash
+php artisan optimize:clear
 php artisan migrate
 ```
 
