@@ -280,3 +280,17 @@ public function down(): void
     });
 }
 ```
+
+## 5. Update User Model
+
+```php
+protected $fillable = [
+    'name',
+    'email',
+    'password',
+    // add following
+    'delete_requested_at',
+    'delete_reason',
+    'account_status',
+];
+```
