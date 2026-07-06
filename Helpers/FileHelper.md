@@ -325,14 +325,6 @@ Return shape (always, from both calls):
 FileHelper::deleteFile($path, $disk); // $disk optional
 ```
 
-## What this fixes vs. the original draft
-
-- Original `fileUpdate()` deleted the old file *before* confirming the new upload succeeded — a failed upload meant permanent data loss. Fixed: upload happens first, delete happens last.
-- Original firebase delete branch silently did nothing and returned as if it succeeded. Fixed: throws instead of lying about success.
-- Original filenames used `uniqid()`, which collides under concurrent uploads. Fixed: `Str::orderedUuid()`.
-- Original returned a bare path string, inconsistent with its own stated goal of API-usable output. Fixed: returns a metadata DTO.
-- Original had a driver/disk naming collision (`'public'` meant two different things in different branches). Fixed: namespaced disk identifiers via `driverToDiskName()`.
-
 ## Known limitations — read before treating this as done
 
 **Switching `FILE_UPLOAD_DRIVER` does not migrate existing files, and `fileUpdate()` cannot reliably delete an old file if the driver changed since it was uploaded.** The code guesses the old file's disk from the *current* config value. If you never change drivers, this is fine. If you do, deletes on old files can silently miss or throw. Real fix requires storing the disk per-file on the model itself (not just in history) — not implemented here, because it's a schema decision you should make deliberately, not one to bury in a helper class.
